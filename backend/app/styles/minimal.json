@@ -1,0 +1,33 @@
+{
+  "label": "Minimal / clean neutral",
+  "description": "Clean neutral browns and a serif title.",
+  "featured": false,
+  "order": 10,
+  "colors": {
+    "primary": "#2E2B28",
+    "accent": "#A08D74",
+    "background": "#FFFFFF",
+    "ink": "#262321",
+    "muted": "#7B746B",
+    "fill": "#F4F1EC",
+    "line": "#D8D2C8"
+  },
+  "fonts": {
+    "title": "Playfair Display",
+    "heading": "Playfair Display",
+    "body": "Inter",
+    "script": "Caveat"
+  },
+  "corner": "square",
+  "cards": "soft",
+  "cover": "panel",
+  "decoration": "lines",
+  "motif": "bow",
+  "swatches": [
+    "#2E2B28",
+    "#A08D74",
+    "#D8D2C8",
+    "#F4F1EC",
+    "#FFFFFF"
+  ]
+}

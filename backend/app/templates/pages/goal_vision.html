@@ -1,0 +1,3 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('goal_vision.title'), r.year_label()) %}{% endcall %}
+{% for k in ['vision','dream','why'] %}{% if S('goal_vision.' ~ k) %}{% call box(L('goal_vision.' ~ k), 'f1') %}{{ lines() }}{% endcall %}{% endif %}{% endfor %}

@@ -1,0 +1,3 @@
+Drop extra .ttf / .otf font files here (only fonts licensed for commercial use, e.g. Google Fonts OFL).
+Name them Family-Style.ttf, e.g. "Montserrat-Regular.ttf" -> appears as "Montserrat" in the font lists.
+Restart start.bat afterwards. Keep the font's licence file next to it.

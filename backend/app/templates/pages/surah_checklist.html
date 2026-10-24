@@ -1,0 +1,3 @@
+{% from '_macros.html' import header with context %}
+{% call header(T('surah_checklist.title'), d.surahs[0][0] ~ '–' ~ d.surahs[-1][0], ar=L('ar.quran')) %}{% endcall %}
+<div class="slist">{% for n, name in d.surahs %}<div><span class="cb"></span><span class="sn">{{ n }}</span><span>{{ name }}</span></div>{% endfor %}</div>

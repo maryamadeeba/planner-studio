@@ -1,0 +1,5 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('gratitude.title')) %}{% endcall %}
+{% for i in range(7) %}
+<div class="box f1"><div class="bh" style="display:flex;justify-content:space-between"><span>{{ L('gratitude.prompt') }}</span><span class="muted" style="font-weight:400">Date: ________</span></div><div class="bb col" style="gap:0">{{ lines() }}</div></div>
+{% endfor %}

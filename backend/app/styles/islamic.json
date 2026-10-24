@@ -1,0 +1,32 @@
+{
+  "label": "Islamic geometric / elegant",
+  "description": "Deep green and gold with a geometric pattern.",
+  "featured": false,
+  "order": 12,
+  "colors": {
+    "primary": "#1E4D48",
+    "accent": "#B48A4E",
+    "background": "#FFFDF7",
+    "ink": "#1D2A28",
+    "muted": "#66746F",
+    "fill": "#F2EEE2",
+    "line": "#DCCDAE"
+  },
+  "fonts": {
+    "title": "Playfair Display",
+    "heading": "Lora",
+    "body": "Lora"
+  },
+  "corner": "soft",
+  "cards": "soft",
+  "cover": "panel",
+  "decoration": "geometric",
+  "motif": "bow",
+  "swatches": [
+    "#1E4D48",
+    "#B48A4E",
+    "#DCCDAE",
+    "#F2EEE2",
+    "#FFFDF7"
+  ]
+}

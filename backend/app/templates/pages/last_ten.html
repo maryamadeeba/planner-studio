@@ -1,0 +1,9 @@
+{% from '_macros.html' import header, lnk with context %}
+{% call header(T('last_ten.title'), d.r.year_label, ar=L('ar.ramadan')) %}{% endcall %}
+<div class="tgrid" style="grid-template-columns: 4.5rem 1fr 1fr 1fr 1fr; grid-template-rows: auto repeat(9, 1fr)">
+  <div class="hd">Night</div><div class="hd">Qiyam / Tahajjud</div><div class="hd">Quran</div><div class="hd">Dhikr & dua</div><div class="hd">Charity</div>
+  {% for dd in d.r.days[20:29] %}
+    {% call lnk('ramadan-' ~ dd.n, 'ev' if dd.odd_last else '', 'flex-direction:column;font-size:0.8rem') %}{{ dd.n }}{% if dd.odd_last %}<span class="star" style="font-size:0.55rem">★ odd</span>{% endif %}{% endcall %}
+    {% for i in range(4) %}<div class="{{ 'we' if dd.odd_last else '' }}"><span class="circle" style="width:1.2rem;height:1.2rem"></span></div>{% endfor %}
+  {% endfor %}
+</div>

@@ -1,0 +1,6 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('khatam.title'), ar=L('ar.quran')) %}{% endcall %}
+{% for k in range(1, 4) %}
+<div class="box fnone"><div class="bh">Khatam {{ k }} · Start ______ · Finish ______</div><div class="ring" style="padding:0.55rem">{% for i in range(1, 31) %}<div>{{ i }}</div>{% endfor %}</div></div>
+{% endfor %}
+{% call box('Intentions & reflections', 'f1') %}{{ lines() }}{% endcall %}

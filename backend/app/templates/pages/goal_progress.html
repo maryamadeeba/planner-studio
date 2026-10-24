@@ -1,0 +1,17 @@
+{% from '_macros.html' import header, blank with context %}
+{% if undated %}
+{% call header(T('goal_progress.title')) %}{{ blank(L('undated.year'), '6rem') }}{% endcall %}
+{% else %}
+{% call header(T('goal_progress.title'), r.year_label()) %}{% endcall %}
+{% endif %}
+{% set n = lay.goals_count|int %}
+{% set cols = d.months|length or 12 %}
+<div class="tgrid" style="grid-template-columns: 7rem repeat({{ cols }}, 1fr); grid-template-rows: auto repeat({{ n * 2 }}, 1fr)">
+  <div class="hd lbl">Goal</div>
+  {% for m in d.months %}<div class="hd">{{ m.short }}</div>{% endfor %}
+  {% for i in range(n) %}
+    <div class="lbl" style="grid-row: span 2; font-weight:600; color:var(--primary)">{{ L('goal_smart.goal') }} {{ i + 1 }}</div>
+    {% for m in d.months %}<div style="flex-direction:column;gap:0.15rem">{% for j in range(4) %}<span class="cb" style="width:0.55rem;height:0.55rem"></span>{% endfor %}</div>{% endfor %}
+    {% for m in d.months %}<div class="muted" style="font-size:0.5rem;align-items:flex-end;padding-bottom:0.2rem">___%</div>{% endfor %}
+  {% endfor %}
+</div>

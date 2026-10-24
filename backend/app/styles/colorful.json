@@ -1,0 +1,48 @@
+{
+  "label": "Colourful / vibrant",
+  "description": "A different bright colour for every month.",
+  "featured": false,
+  "order": 13,
+  "colors": {
+    "primary": "#2B2D42",
+    "accent": "#F06565",
+    "background": "#FFFFFF",
+    "ink": "#22223B",
+    "muted": "#6C6F86",
+    "fill": "#FFF3E2",
+    "line": "#E3E1EA"
+  },
+  "fonts": {
+    "title": "Poppins",
+    "heading": "Poppins",
+    "body": "Inter",
+    "script": "Caveat"
+  },
+  "corner": "rounded",
+  "cards": "soft",
+  "cover": "panel",
+  "decoration": "bands",
+  "motif": "bow",
+  "swatches": [
+    "#FF6B6B",
+    "#FFA94D",
+    "#FFD43B",
+    "#51CF66",
+    "#4DABF7",
+    "#9775FA"
+  ],
+  "rainbow": [
+    "#FF6B6B",
+    "#FF922B",
+    "#F5B700",
+    "#40C057",
+    "#22B8CF",
+    "#4C6EF5",
+    "#845EF7",
+    "#E64980",
+    "#FF6B6B",
+    "#FF922B",
+    "#40C057",
+    "#4C6EF5"
+  ]
+}

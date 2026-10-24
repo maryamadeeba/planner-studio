@@ -1,0 +1,37 @@
+{% from '_macros.html' import header, box, lines, checks, glass, face, lnk, blank, day_quote with context %}
+{% set c = d.day %}
+{% if undated %}
+{% call header(c.weekday_name, r.whose('Day') or L('day.hand'), size=2.4) %}
+  {% call lnk(d.week.id if cfg.modules.week else c.month_key) %}<span class="pill">{{ blank(L('undated.date'), '5.5rem') }}</span>{% endcall %}
+{% endcall %}
+{% else %}
+{% call header(c.weekday_name, r.who('Day') ~ c.day ~ ' ' ~ c.month_name ~ ' ' ~ eng.year_title(c.year), size=2.4) %}
+  {% call lnk(d.week.id if cfg.modules.week else c.month_key) %}<span class="pill">{{ c.day }} {{ c.month_name }}</span>{% endcall %}
+  {% if cfg.calendar.iso_weeks %}<div class="small">Week {{ c.iso_week }}</div>{% endif %}
+{% endcall %}
+{% endif %}
+{% if c.events %}<div class="fnone" style="font-size:0.78rem;color:var(--accent);font-weight:600">{{ c.events|map(attribute='name')|join(' · ') }}</div>{% endif %}
+<div class="row grow">
+  {% if S('day.schedule') %}
+  {% call box(L('day.schedule'), 'f1') %}
+    {% set start = lay.day_start|int %}{% set end = lay.day_end|int %}
+    <div class="hours">
+      {% for h in range(start, end + 1) %}
+      <div><span class="hr">{{ '%02d:00'|format(h) }}</span>{% if lay.half_hours %}<span class="f1 col" style="gap:0"><span class="f1 half"></span><span class="f1"></span></span>{% else %}<span class="f1"></span>{% endif %}</div>
+      {% endfor %}
+    </div>
+  {% endcall %}
+  {% endif %}
+  <div class="col f1">
+    {% if S('day.priorities') %}{% call box(L('day.priorities'), 'fnone', 'height:18%') %}{{ checks(3, true) }}{% endcall %}{% endif %}
+    {% if S('day.todo') %}{% call box(L('day.todo'), 'f2') %}{{ checks(8) }}{% endcall %}{% endif %}
+    {% if S('day.water') or S('day.mood') %}
+    <div class="row fnone">
+      {% if S('day.water') %}{% call box(L('day.water')) %}<div class="water">{% for i in range(lay.water_glasses|int) %}{{ glass() }}{% endfor %}</div>{% endcall %}{% endif %}
+      {% if S('day.mood') %}{% call box(L('day.mood')) %}<div class="mood">{% for i in range(5) %}{{ face(i) }}{% endfor %}</div>{% endcall %}{% endif %}
+    </div>
+    {% endif %}
+    {% if S('day.notes') %}{% call box(L('day.notes'), 'f2 butter') %}{{ lines() }}{% endcall %}{% endif %}
+  </div>
+</div>
+{{ day_quote(r.quote(p)) }}

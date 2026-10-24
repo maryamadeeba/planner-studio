@@ -1,0 +1,6 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('goal_smart.title'), L('goal_smart.goal') ~ ' ' ~ d.n) %}{% endcall %}
+<div class="box fnone blush" style="height:3.6rem"><div class="bh">{{ L('goal_smart.goal') }} {{ d.n }}</div><div class="bb">{{ lines() }}</div></div>
+{% for k in ['s','m','a','r','t'] %}
+<div class="box f1"><div class="bh plain" style="display:flex;gap:0.5rem;align-items:center"><span class="num" style="background:var(--accent);color:var(--on-accent)">{{ k|upper }}</span>{{ L('goal_smart.' ~ k) }}</div><div class="bb col" style="gap:0">{{ lines() }}</div></div>
+{% endfor %}

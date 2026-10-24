@@ -1,0 +1,5 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('reflection.title'), ar=L('ar.quran')) %}Date: ________{% endcall %}
+{% call box(L('reflection.prompt'), 'fnone', 'height:12%') %}{{ lines() }}{% endcall %}
+{% call box('What it means to me', 'f2') %}{{ lines() }}{% endcall %}
+{% call box('How I will act on it', 'f1') %}{{ lines() }}{% endcall %}

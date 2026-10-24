@@ -1,0 +1,25 @@
+{% from '_macros.html' import header, box, lines, checks, blank with context %}
+{% set m = d.month %}
+{% if undated %}
+{% call header(T('month_goals.title'), r.whose('Month')) %}{{ blank(L('undated.month'), '8rem') }}{% endcall %}
+{% else %}
+{% call header(T('month_goals.title'), r.who('Month') ~ m.title, ar=(m.name_ar if mode == 'hijri' and cfg.calendar.arabic_month_names else '')) %}{% endcall %}
+{% endif %}
+{% if S('month_goals.focus') %}
+<div class="box fnone focus-box">
+  <span class="bh">{{ L('month_goals.focus') }}</span>
+  <span class="hand-line"></span>
+</div>
+{% endif %}
+<div class="{{ 'row' if g.landscape else 'col' }} grow">
+  <div class="col f1">
+    {% call box(L('month_goals.goals'), 'f2') %}{{ checks(6) }}{% endcall %}
+    {% if S('month_goals.priorities') %}{% call box(L('month_goals.priorities'), 'f1') %}{{ checks(3, true) }}{% endcall %}{% endif %}
+  </div>
+  <div class="col f1">
+    {% if S('month_goals.dates') %}{% call box(L('month_goals.dates'), 'f1') %}
+      <div class="checks">{% for i in range(5) %}<div><span class="date-slot"></span></div>{% endfor %}</div>
+    {% endcall %}{% endif %}
+    {% call box(L('month_goals.notes'), 'f2') %}{{ lines() }}{% endcall %}
+  </div>
+</div>

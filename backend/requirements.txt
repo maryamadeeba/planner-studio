@@ -1,0 +1,13 @@
+# Tested versions (Python 3.11 – 3.13 on Windows 10/11)
+fastapi==0.159.1
+uvicorn[standard]==0.54.0
+sqlmodel==0.0.48
+SQLAlchemy==2.1.6
+pydantic==2.13.5
+jinja2==3.1.6
+playwright==1.56.0
+pypdf==5.9.0
+hijridate==2.6.0
+pillow==12.3.0
+python-multipart==0.0.32
+pytest==9.1.1

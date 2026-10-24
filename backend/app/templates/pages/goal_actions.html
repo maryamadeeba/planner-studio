@@ -1,0 +1,6 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('goal_actions.title'), L('goal_smart.goal') ~ ' ' ~ d.n) %}{% endcall %}
+<div class="tgrid" style="grid-template-columns: 2.2rem 1fr 6rem 6rem 3.5rem; grid-template-rows: auto repeat(15, 1fr)">
+  <div class="hd"></div><div class="hd lbl">Action step</div><div class="hd">Start</div><div class="hd">Due</div><div class="hd">Done</div>
+  {% for i in range(15) %}<div>{{ i + 1 }}</div><div></div><div></div><div></div><div><span class="cb"></span></div>{% endfor %}
+</div>

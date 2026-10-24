@@ -1,0 +1,13 @@
+{% from '_macros.html' import header, box, lines, minimonth, blank with context %}
+{% if undated %}
+{% call header(T('quarter.title'), r.whose('Quarter')) %}{{ blank(L('undated.quarter'), '6rem') }}{% endcall %}
+{% else %}
+{% call header(T('quarter.title') ~ ' ' ~ d.q, eng.year_title(d.year)) %}{{ d.months[0].name }} – {{ d.months[-1].name }}{% endcall %}
+{% endif %}
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;flex:none">
+  {% for m in d.months %}{{ minimonth(m) }}{% endfor %}
+</div>
+<div class="{{ 'row' if g.landscape else 'col' }} grow">
+{% if S('quarter.goals') %}{% call box(L('quarter.goals')) %}{% for m in d.months %}<div class="prompt" style="font-style:normal;font-weight:600;color:var(--primary)">{% if undated %}{{ L('undated.month') }} {{ loop.index }}{% else %}{{ m.name }}{% endif %}</div>{{ lines() }}{% endfor %}{% endcall %}{% endif %}
+{% if S('quarter.notes') %}{% call box(L('quarter.notes')) %}{{ lines() }}{% endcall %}{% endif %}
+</div>

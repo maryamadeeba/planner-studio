@@ -1,0 +1,61 @@
+{% from '_macros.html' import lnk, bow, flower, motif, blank, picture, quote_card with context %}
+{% set nm = pers.name|trim %}
+{% set img = r.image('cover') if S('cover.image') else none %}
+{% set full = img and img.mode == 'full' %}
+{% set q = r.quote(p) %}
+{% if t.decoration == 'geometric' and not full %}
+{% set nx = ((g.w - 2.2 * g.rem) / 40)|int %}{% set ny = ((g.h - 2.2 * g.rem) / 40)|int %}
+<svg class="deco-svg" style="left:{{ (g.w - nx * 40) / 2 }}px;top:{{ (g.h - ny * 40) / 2 }}px;width:{{ nx * 40 }}px;height:{{ ny * 40 }}px" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" fill="url(#geo)" opacity="0.55"/></svg>
+<div class="deco-svg" style="inset:3.6rem;background:{{ t.background }};border:1.5px solid {{ t.accent }};border-radius:var(--r-lg)"></div>
+{% elif t.decoration == 'bands' and not full %}
+<div class="deco-svg" style="left:0;right:0;top:0;height:1.4rem;display:flex">{% for c in t.rainbow[:8] %}<div style="flex:1;background:{{ c }}"></div>{% endfor %}</div>
+<div class="deco-svg" style="left:0;right:0;bottom:0;height:1.4rem;display:flex">{% for c in t.rainbow[:8]|reverse %}<div style="flex:1;background:{{ c }}"></div>{% endfor %}</div>
+{% elif t.decoration == 'bloom' and not full %}
+<div class="deco-svg" style="left:-4rem;top:-4rem;width:16rem;height:16rem;border-radius:50%;background:{{ t.fill }}"></div>
+<div class="deco-svg" style="right:-5rem;bottom:-5rem;width:19rem;height:19rem;border-radius:50%;background:{{ t.note_soft }}"></div>
+{{ flower('position:absolute;left:3.2rem;top:3.4rem;width:3.6rem') }}{{ flower('position:absolute;left:7.4rem;top:2.4rem;width:1.8rem') }}
+{{ flower('position:absolute;right:3.4rem;top:5rem;width:2.6rem') }}{{ flower('position:absolute;right:4.4rem;bottom:4.2rem;width:4rem') }}
+{{ flower('position:absolute;left:4rem;bottom:6rem;width:2.2rem') }}
+<svg class="deco-svg" style="left:0;top:0;width:100%;height:100%" viewBox="0 0 100 140" aria-hidden="true">{% for x, y in [(14, 30), (86, 22), (90, 70), (10, 92), (24, 128), (70, 118), (52, 9)] %}<ellipse cx="{{ x }}" cy="{{ y }}" rx="0.8" ry="0.6" fill="{{ t.accent }}" opacity="0.6"/>{% endfor %}</svg>
+{% elif t.decoration == 'minimal' and not full %}
+{% elif not full %}
+<svg class="deco-svg" style="left:0;top:0;width:100%;height:100%" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true">
+  <circle cx="4" cy="6" r="17" fill="{{ t.fill }}"/><circle cx="21" cy="3" r="5" fill="{{ t.highlight_soft }}"/>
+  <circle cx="97" cy="134" r="18" fill="{{ t.fill }}"/><circle cx="80" cy="137" r="6" fill="{{ t.note_soft }}"/>
+</svg>
+{% endif %}
+{% if full %}{{ picture(img, 'img-full') }}{% endif %}
+<div class="cover-frame"></div>
+{% set fw = (g.w * 0.56)|round %}{% set fh = (g.h * (0.24 if q else 0.3))|round %}
+{% set framed %}{% if img and not full %}{{ picture(img, 'img-frame', 'width:' ~ ([fw, fh]|min if img.shape == 'circle' else fw) ~ 'px;height:' ~ fh ~ 'px') }}{% endif %}{% endset %}
+<div class="cover-wrap{{ ' has-full' if full }}">
+  <div class="cover-panel">
+    {% set logo = r.cover_logo() %}
+    {% if logo %}<img class="cover-logo" src="{{ logo }}" alt="">{% elif t.motif %}{{ motif('width:3.8rem;height:auto') }}{% endif %}
+    {% if img and not full and img.position == 'top' %}{{ framed }}{% endif %}
+    {% if nm and pers.monogram and S('cover.monogram') and not (img and not full) %}<div class="monogram"><span>{{ nm[0]|upper }}</span></div>{% endif %}
+    {% if nm %}<div class="cover-name" style="font-size:{{ fit(nm, 4.2, 10, 0.4) }}">{{ nm }}</div>{% endif %}
+    <div class="cover-title" style="font-size:{{ fit(r.cover_title(), 1.1, 24, 0.5) }}">{{ r.cover_title() }}</div>
+    {% if pers.show_year and S('cover.year') %}
+      {% if undated %}<div class="cover-undated">{{ blank(L('undated.year'), '8rem') }}</div>
+      {% else %}{% set yl = r.year_label() %}<div class="cover-year" style="font-size:{{ fit(yl, 3.2, 9, 0.4) }}">{{ yl }}</div>{% endif %}
+    {% endif %}
+    {% if img and not full and img.position not in ('top', 'bottom') %}{{ framed }}{% endif %}
+    {% set sub = pers.subtitle or L('cover.subtitle') %}
+    {% if sub and S('cover.subtitle') %}<div class="cover-sub" style="font-size:{{ fit(sub, 1.5, 40, 0.6) }}">{{ sub }}</div>{% endif %}
+    {% if q %}{{ quote_card(q, 1.25, 60) }}{% endif %}
+    {% if img and not full and img.position == 'bottom' %}{{ framed }}{% endif %}
+    {% if digital and short and plan.home == 'cover' %}
+    <nav class="start-links">
+      {% for label, tid in r.start_links() %}{% call lnk(tid) %}{{ label }}{% endcall %}{% endfor %}
+    </nav>
+    {% endif %}
+  </div>
+</div>
+{% if foot.enabled and (foot.text or foot.logo) %}
+<div class="cover-foot" style="opacity:{{ foot.opacity }}{{ ';bottom:4.6rem' if t.decoration == 'geometric' }}">
+  {% if foot.logo and r.asset_url(foot.logo) != logo %}<img src="{{ r.asset_url(foot.logo) }}" alt="">{% endif %}{{ foot.text }}</div>
+{% endif %}
+{% if digital and plan.home and plan.home != 'cover' %}
+  {% call lnk(plan.home, '', 'position:absolute;bottom:' ~ (6.4 if t.decoration == 'geometric' else 4.6) ~ 'rem;left:50%;transform:translateX(-50%);padding:0.45rem 1.3rem;border-radius:2rem;background:' ~ t.primary ~ ';color:' ~ t.background ~ ';font-family:var(--label-font);font-size:0.74rem;font-weight:600;letter-spacing:0.14em') %}OPEN PLANNER →{% endcall %}
+{% endif %}

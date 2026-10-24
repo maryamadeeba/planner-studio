@@ -1,0 +1,33 @@
+{% from '_macros.html' import header, box, lines, lnk, blank, quote_strip with context %}
+{% set m = d.month %}
+{% set img = r.image('month_header') %}
+{% if undated %}
+{% call header(T('month.title'), r.whose('Month') or L('month.hand'), img=img) %}{{ blank(L('undated.month'), '8rem') }}{% endcall %}
+{% else %}
+{% call header(m.name, r.who('Month') ~ eng.year_title(m.year), ar=(m.name_ar if mode == 'hijri' and cfg.calendar.arabic_month_names else ''), size=2.6, img=img) %}{% endcall %}
+{% endif %}
+{{ quote_strip(r.quote(p)) }}
+<div class="{{ 'row' if g.landscape else 'col' }} grow" style="flex:1">
+  <div class="col" style="flex:{{ 3 if g.landscape else 4 }}">
+    <div class="mgrid" style="grid-template-rows: auto repeat({{ m.grid|length }}, 1fr)">
+      {% for wd in WEEKDAYS_SHORT %}<div class="wd">{{ wd }}</div>{% endfor %}
+      {% for row in m.grid %}{% for c in row %}
+        {% if c and eng.day_in_range(c) %}
+          {% set hl = c.events and c.events[0].highlight %}
+          {% call lnk(plan.day_target.get(c.id), 'c' ~ (' we' if c.weekday >= 5 else '') ~ (' ev' if hl else '')) %}
+            <span class="n">{{ c.day }}</span>
+            {% if cfg.calendar.iso_weeks and c.weekday == 0 %}<span class="iso">W{{ c.iso_week }}</span>{% endif %}
+            {% if c.events and S('month.events') %}<span class="evs">{% for e in c.events[:2] %}<b>{{ e.name }}</b>{% endfor %}</span>{% endif %}
+          {% endcall %}
+        {% elif c %}<div class="c out"><span class="n">{{ c.day }}</span></div>
+        {% else %}<div class="c{{ ' we' if undated and loop.index0 >= 5 else ' pad' if not undated }}"></div>{% endif %}
+      {% endfor %}{% endfor %}
+    </div>
+  </div>
+  {% if S('month.goals') or S('month.notes') %}
+  <div class="{{ 'col' if g.landscape else 'row' }}" style="flex:{{ 1.1 if g.landscape else 1.3 }}">
+    {% if S('month.goals') %}{% call box(L('month.goals')) %}<div class="checks">{% for i in range(5) %}<div><span class="cb"></span></div>{% endfor %}</div>{% endcall %}{% endif %}
+    {% if S('month.notes') %}{% call box(L('month.notes'), 'f1 butter') %}{{ lines() }}{% endcall %}{% endif %}
+  </div>
+  {% endif %}
+</div>

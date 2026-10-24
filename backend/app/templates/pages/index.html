@@ -1,0 +1,23 @@
+{% from '_macros.html' import header, lnk with context %}
+{% call header(L('index.title')) %}{{ r.year_label() or L('undated.year') ~ ': ______' }}{% endcall %}
+{% if targets %}
+<div class="idx-years">
+  {% for y, tg in targets.items() %}
+  <div class="idx-year">
+    {% call lnk(tg.year, 'y') %}{{ L('undated.month') ~ 's' if undated else eng.year_title(y) }}{% endcall %}
+    <div class="mm">{% for name in eng.month_names_short() %}{% call lnk(tg.m.get(loop.index)) %}{{ name }}{% endcall %}{% endfor %}</div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+<div class="idx-list col grow" style="gap:0">
+  {% for label, tid in r.chips() %}
+    {% call lnk(tid) %}<b>{{ label }}</b><span class="dots"></span><span class="pg">p. {{ page_no(tid) }}</span>{% endcall %}
+  {% endfor %}
+  {% if targets|length <= 3 %}
+  {% for y, tg in targets.items() %}{% for q in range(1,5) %}{% if tg.q.get(q) %}
+    {% call lnk(tg.q.get(q)) %}<span>{% if not undated %}{{ eng.year_title(y) }} · {% endif %}Quarter {{ q }}</span><span class="dots"></span><span class="pg">p. {{ page_no(tg.q.get(q)) }}</span>{% endcall %}
+  {% endif %}{% endfor %}{% endfor %}
+  {% endif %}
+</div>
+{% if digital %}<div class="small muted center">Tap any tab, month or date to jump to that page.</div>{% endif %}

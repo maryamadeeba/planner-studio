@@ -1,0 +1,6 @@
+{% from '_macros.html' import header with context %}
+{% call header(T('meal_planner.title'), d.r.year_label ~ ' · Days ' ~ d.days[0].n ~ '–' ~ d.days[-1].n, ar=L('ar.ramadan')) %}{% endcall %}
+<div class="tgrid" style="grid-template-columns: 2.4rem 1fr 1fr 6rem; grid-template-rows: auto repeat({{ d.days|length }}, 1fr)">
+  <div class="hd">Day</div><div class="hd">{{ L('ramadan_day.suhoor') }}</div><div class="hd">{{ L('ramadan_day.iftar') }}</div><div class="hd">Groceries</div>
+  {% for dd in d.days %}<div>{{ dd.n }}</div><div></div><div></div><div><span class="cb"></span></div>{% endfor %}
+</div>

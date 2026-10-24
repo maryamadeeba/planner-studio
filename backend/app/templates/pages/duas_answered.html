@@ -1,0 +1,6 @@
+{% from '_macros.html' import header with context %}
+{% call header(T('duas_answered.title'), ar=L('ar.dua')) %}{% endcall %}
+<div class="tgrid" style="grid-template-columns: 5rem 1fr 5rem 1fr; grid-template-rows: auto repeat(16, 1fr)">
+  <div class="hd">Date asked</div><div class="hd lbl">My dua</div><div class="hd">Answered</div><div class="hd lbl">How Allah answered</div>
+  {% for i in range(16) %}<div></div><div></div><div></div><div></div>{% endfor %}
+</div>

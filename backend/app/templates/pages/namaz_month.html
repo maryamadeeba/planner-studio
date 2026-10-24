@@ -1,0 +1,20 @@
+{% from '_macros.html' import header, lnk, blank with context %}
+{% set m = d.month %}
+{% set extra = [] %}{% for k, lbl in [('sunnah','Sunnah'),('tahajjud','Tahajjud'),('witr','Witr')] %}{% if S('namaz_month.' ~ k) %}{% set _ = extra.append(lbl) %}{% endif %}{% endfor %}
+{% set cols = PRAYERS + extra %}
+{% if undated %}
+{% call header(T('namaz.title'), r.whose('Month'), ar=L('ar.namaz')) %}{{ blank(L('undated.month'), '7rem') }}{% endcall %}
+{% else %}
+{% call header(T('namaz.title'), r.who('Month') ~ m.title, ar=L('ar.namaz')) %}{% endcall %}
+{% endif %}
+<div class="tgrid" style="grid-template-columns: 2.4rem 2.4rem repeat({{ cols|length }}, 1fr) 1.6fr; grid-template-rows: auto repeat({{ m.days|length }}, 1fr)">
+  <div class="hd">{{ 'Day' }}</div><div class="hd"></div>
+  {% for c in cols %}<div class="hd">{{ c }}</div>{% endfor %}<div class="hd">Notes</div>
+  {% for c in m.days %}
+    {% set we = 'we' if c.weekday >= 5 and not undated else '' %}
+    {% call lnk(plan.day_target.get(c.id) if eng.day_in_range(c) else none, 'ev' if c.events else '') %}{{ c.day }}{% endcall %}
+    <div class="muted {{ we }}">{{ '' if undated else WEEKDAYS_SHORT[c.weekday] }}</div>
+    {% for x in cols %}<div class="{{ we }}"><span class="circle"></span></div>{% endfor %}
+    <div class="{{ we }}" style="justify-content:flex-start;padding-left:0.3rem;color:var(--accent);font-size:0.5rem">{{ c.events|map(attribute='name')|join(', ') }}</div>
+  {% endfor %}
+</div>

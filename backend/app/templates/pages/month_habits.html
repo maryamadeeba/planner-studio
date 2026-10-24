@@ -1,0 +1,19 @@
+{% from '_macros.html' import header, blank with context %}
+{% set m = d.month %}
+{% if undated %}
+{% call header(T('habits.title'), 'small steps, every day') %}{{ blank(L('undated.month'), '8rem') }}{% endcall %}
+{% else %}
+{% call header(T('habits.title'), 'small steps, every day', meta=m.title, ar=(m.name_ar if mode == 'hijri' and cfg.calendar.arabic_month_names else '')) %}{% endcall %}
+{% endif %}
+{% set n = m.days|length %}
+{% set habits = (cfg.habits + [''] * 30)[:lay.habit_rows|int] %}
+<div class="tgrid" style="grid-template-columns: 7rem repeat({{ n }}, 1fr); grid-template-rows: auto auto repeat({{ habits|length }}, 1fr)">
+  <div class="hd lbl">{{ L('habits.habit') }}</div>
+  {% for c in m.days %}<div class="hd {{ 'ev' if c.events else '' }}">{{ c.day }}</div>{% endfor %}
+  <div class="hd lbl"></div>
+  {% for c in m.days %}<div class="hd" style="font-size:0.5rem;font-weight:400">{{ '' if undated else WEEKDAYS_LETTER[c.weekday] }}</div>{% endfor %}
+  {% for h in habits %}
+    <div class="lbl">{{ h }}</div>
+    {% for c in m.days %}<div class="{{ 'we' if c.weekday >= 5 and not undated else '' }}"></div>{% endfor %}
+  {% endfor %}
+</div>

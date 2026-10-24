@@ -1,0 +1,9 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('eid_prep.title'), ar=L('ar.ramadan')) %}{% endcall %}
+<div class="row grow">
+  {% call box('Checklist', 'f1') %}<div class="checks">{% for item in (cfg.eid_checklist + [''] * 14)[:14] %}<div><span class="cb"></span><span>{{ item }}</span></div>{% endfor %}</div>{% endcall %}
+  <div class="col f1">
+    {% call box('Gift list') %}{{ lines() }}{% endcall %}
+    {% call box('Menu') %}{{ lines() }}{% endcall %}
+  </div>
+</div>

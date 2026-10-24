@@ -1,0 +1,6 @@
+/* Blush Bloom extras: hand-lettered dates and softer, bubblier details. Rendered with Jinja (t = theme). */
+.mgrid .c .n { font-family: var(--title-font); font-size: 1.1rem; font-weight: 700; top: 0.1rem; }
+.mgrid .wd { font-family: var(--title-font); font-size: 0.95rem; letter-spacing: 0.04em; text-transform: none; font-weight: 700; }
+.cover-title { font-family: var(--title-font); letter-spacing: 0.06em; text-transform: none; font-weight: 700; }
+.mini .mt { font-family: var(--title-font); font-size: 1.05rem; }
+.cb { border-radius: 50%; }

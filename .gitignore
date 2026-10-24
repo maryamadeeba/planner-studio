@@ -1,0 +1,21 @@
+# Python
+backend/.venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# App data (your projects, uploads and exports are local to your PC)
+data/
+backend/data/
+exports/
+*.db
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

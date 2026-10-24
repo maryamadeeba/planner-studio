@@ -1,0 +1,59 @@
+{% from '_macros.html' import lnk with context %}
+{% set d = p.data %}
+{% set cur_month = (d.month.month if d.month else (d.day.month if d.day else (d.week.days[d.week.in_range.index(true)].month if d.week else none))) %}
+{% set cur_year = p.year or (targets.keys()|list|first if targets else none) %}
+{% set band = r.month_color(cur_month) if (t.preset == 'colorful' and cur_month) else t.accent %}
+{% set full_page = p.kind in ('cover', 'divider') %}
+<section class="page pg-{{ p.kind }}" id="{{ p.id }}" style="{{ page_vars }}--band: {{ band }}">
+{% if t.decoration == 'geometric' and not full_page %}<svg class="geo-band" style="top:0;height:{{ [g.mt - 4, 4]|max }}px;left:0;width:{{ g.w - g.tabs_w }}px" aria-hidden="true"><rect width="100%" height="100%" fill="url(#geo)" opacity="0.6"/></svg>
+{% elif t.decoration == 'bloom' and not full_page %}{# vector dots: a CSS radial-gradient would be rasterised on every page #}
+{% set n = ((g.w - g.tabs_w) / (1.05 * g.rem))|int %}<svg class="dot-band" style="width:{{ g.w - g.tabs_w }}px;height:{{ g.rem * 0.9 }}px" aria-hidden="true">{% for i in range(n) %}<circle cx="{{ (i + 0.5) * 1.05 * g.rem }}" cy="{{ g.rem * 0.45 }}" r="{{ g.rem * 0.17 }}"/>{% endfor %}</svg>
+{% elif not full_page %}<div class="accent-band"></div>{% endif %}
+{% if digital and p.kind != 'cover' %}
+  <nav class="topbar">
+    {% call lnk(plan.home) %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>{{ L('nav.home') }}{% endcall %}
+    {% if p.parent and p.parent != plan.home %}{% call lnk(p.parent) %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>{{ L('nav.back') }}{% endcall %}{% endif %}
+    {% set years = targets.keys()|list %}
+    {% if years|length > 1 and cur_year and not short %}
+      {% set yi = years.index(cur_year) %}
+      {% if yi > 0 %}{% call lnk(targets[years[yi-1]].year) %}‹ {{ years[yi-1] }}{% endcall %}{% endif %}
+      {% if yi < years|length - 1 %}{% call lnk(targets[years[yi+1]].year) %}{{ years[yi+1] }} ›{% endcall %}{% endif %}
+    {% endif %}
+    <span class="sp"></span>
+    {% for label, tid in r.chips() %}{% call lnk(tid) %}{{ label }}{% endcall %}{% endfor %}
+  </nav>
+  <aside class="tabs">
+    {% if short %}
+      {% for label, tid, cls in r.short_tabs(p) %}{% call lnk(tid, cls) %}{{ label[:6] }}{% endcall %}{% endfor %}
+    {% elif targets and cur_year in targets %}
+      {% set tg = targets[cur_year] %}
+      {% call lnk(tg.year, 'yr') %}{{ L('undated.year') if undated else cur_year }}{% endcall %}
+      <i class="sep"></i>
+      {% for q in range(1, 5) %}{% call lnk(tg.q.get(q), 'q') %}Q{{ q }}{% endcall %}{% endfor %}
+      <i class="sep"></i>
+      {% for name in eng.month_names_short() %}{% set mi = loop.index %}
+        {% call lnk(tg.m.get(mi), 'on' if mi == cur_month else '', ('background:' ~ r.month_color(mi) ~ ';color:#fff') if t.preset == 'colorful' and mi != cur_month and not t.ink_saving else '') %}{{ name }}{% endcall %}
+      {% endfor %}
+    {% elif plan.sections %}
+      {% for label, tid in plan.sections[:16] %}{% call lnk(tid, 'on' if p.group == label else '') %}{{ label[:6] }}{% endcall %}{% endfor %}
+    {% endif %}
+  </aside>
+{% endif %}
+{% if full_page %}
+  {% include 'pages/' ~ p.kind ~ '.html' %}
+{% else %}
+  <div class="content">
+    {% include 'pages/' ~ p.kind ~ '.html' %}
+  </div>
+{% endif %}
+{% if r.has_footer and p.kind != 'cover' %}
+  {% set shop %}{% if foot.enabled and (foot.text or foot.logo) %}<span class="shop">{% if foot.logo %}<img src="{{ r.asset_url(foot.logo) }}" alt="">{% endif %}{{ foot.text }}</span>{% endif %}{% endset %}
+  {% set personal %}{% if r.personal_footer() %}<span>{{ r.personal_footer() }}</span>{% endif %}{% endset %}
+  {% set pnum %}{% if not digital %}<span>{{ pidx + 1 }}</span>{% endif %}{% endset %}
+  <footer class="pfoot">
+    <div class="slot l">{% if foot.position == 'left' %}{{ shop }}{% else %}{{ personal }}{% endif %}</div>
+    <div class="slot c">{% if foot.position == 'center' %}{{ shop }}{% endif %}</div>
+    <div class="slot r">{% if foot.position == 'right' %}{{ shop }}{% elif foot.position == 'left' %}{{ personal }}{% endif %}&nbsp;{{ pnum }}</div>
+  </footer>
+{% endif %}
+</section>

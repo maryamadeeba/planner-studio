@@ -1,0 +1,6 @@
+{% from '_macros.html' import header, box with context %}
+{% call header(T('method369.title')) %}Date: ________{% endcall %}
+<div class="box fnone" style="height:4.4rem"><div class="bh">My manifestation</div><div class="bb ls ls-lined"></div></div>
+{% for k, n in [('morning',3),('afternoon',6),('night',9)] %}
+{% call box(L('method369.' ~ k), 'f' ~ (1 if n == 3 else (2 if n == 6 else 3))) %}<div class="checks">{% for i in range(n) %}<div><span class="num">{{ i+1 }}</span></div>{% endfor %}</div>{% endcall %}
+{% endfor %}

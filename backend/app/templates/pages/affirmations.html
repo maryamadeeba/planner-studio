@@ -1,0 +1,4 @@
+{% from '_macros.html' import header with context %}
+{% call header(T('affirmations.title')) %}{% endcall %}
+{% set items = r.affirmations() %}{% set longest = (items|map('length')|max) if items else 10 %}
+<div class="aff">{% for a in items %}<div style="font-size:{{ fit('x' * longest, 1.55, 44, 0.6) }}">{{ a }}</div>{% endfor %}</div>

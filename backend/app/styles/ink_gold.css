@@ -1,0 +1,5 @@
+/* Ink & Gold Minimal extras: lighter numerals, square marks, no tints on the cover. Rendered with Jinja (t = theme). */
+.mgrid .c .n { font-weight: 400; font-size: 0.74rem; top: 0.4rem; left: 0.45rem; }
+.mgrid .c.ev .n { background: transparent; color: var(--primary); border-bottom: 2px solid var(--accent); border-radius: 0; padding: 0; }
+.cb { border-radius: 0; border-width: 1px; }
+.cover-name { font-weight: 600; letter-spacing: -0.02em; }

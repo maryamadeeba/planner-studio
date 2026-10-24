@@ -1,0 +1,10 @@
+{% from '_macros.html' import header, lnk with context %}
+{% call header(T('ramadan_tracker.title'), d.r.year_label, ar=L('ar.ramadan')) %}{% endcall %}
+<div class="tgrid" style="grid-template-columns: 2.4rem 1fr 3rem repeat(5, 1fr) 3rem 3rem; grid-template-rows: auto repeat(30, 1fr)">
+  <div class="hd">Day</div><div class="hd lbl">Date</div><div class="hd">Fast</div>{% for pr in PRAYERS %}<div class="hd">{{ pr }}</div>{% endfor %}<div class="hd">Taraweeh</div><div class="hd">Quran</div>
+  {% for dd in d.r.days %}
+    {% call lnk('ramadan-' ~ dd.n, 'ev' if dd.odd_last else '') %}{{ dd.n }}{% if dd.odd_last %}<span class="star">★</span>{% endif %}{% endcall %}
+    <div class="lbl muted {{ 'we' if dd.last_ten else '' }}" style="font-size:0.58rem">{{ dd.label }}</div>
+    {% for i in range(8) %}<div class="{{ 'we' if dd.last_ten else '' }}"><span class="circle"></span></div>{% endfor %}
+  {% endfor %}
+</div>

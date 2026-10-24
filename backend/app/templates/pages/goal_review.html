@@ -1,0 +1,11 @@
+{% from '_macros.html' import header, box, lines, blank with context %}
+{% if undated %}
+{% call header(T('goal_review.title')) %}{{ blank(L('undated.month'), '8rem') }}{% endcall %}
+{% else %}
+{% call header(T('goal_review.title'), d.month.title) %}{% endcall %}
+{% endif %}
+{% for k in ['went_well','improve','next'] %}{% call box(L('goal_review.' ~ k), 'f1' ~ (' butter' if k == 'next' else '')) %}{{ lines() }}{% endcall %}{% endfor %}
+<div class="box fnone" style="padding:0.55rem 0.9rem;flex-direction:row;align-items:center;gap:0.8rem;font-size:0.75rem"><b style="color:var(--primary)">Rate this month</b><span class="rating">{% for i in range(10) %}<span class="circle">{{ i + 1 }}</span>{% endfor %}</span></div>
+<div class="box fnone blush" style="padding:0.6rem 0.9rem;flex-direction:row;align-items:center;gap:0.8rem;font-size:0.75rem;flex-wrap:wrap">
+  {% for i in range(lay.goals_count|int) %}<span><b style="color:var(--primary)">{{ L('goal_smart.goal') }} {{ i + 1 }}</b> ____ %</span>{% endfor %}
+</div>

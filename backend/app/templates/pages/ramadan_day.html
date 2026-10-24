@@ -1,0 +1,19 @@
+{% from '_macros.html' import header, box, lines, checks with context %}
+{% call header(T('ramadan_day.title') ~ ' · Day ' ~ d.d.n, d.d.label, ar=L('ar.ramadan')) %}{% if d.d.odd_last %}<span class="pill">★ Odd night – seek Laylat al-Qadr</span>{% elif d.d.last_ten %}<span class="pill">Last ten nights</span>{% endif %}{% endcall %}
+{% if S('ramadan_day.meals') %}
+<div class="row" style="flex:0.9">
+  {% call box(L('ramadan_day.suhoor')) %}<div class="small muted" style="padding:0.25rem 0.55rem">Time: ______</div>{{ lines() }}{% endcall %}
+  {% call box(L('ramadan_day.iftar')) %}<div class="small muted" style="padding:0.25rem 0.55rem">Time: ______</div>{{ lines() }}{% endcall %}
+</div>
+{% endif %}
+{% if S('ramadan_day.prayers') %}
+<div class="box fnone"><div class="bh">{{ L('ramadan_day.prayers') }}</div>
+  <div style="display:flex;justify-content:space-around;padding:0.45rem 0.5rem;font-size:0.72rem">{% for pr in PRAYERS + ['Taraweeh'] %}<span style="display:flex;align-items:center;gap:0.3rem"><span class="cb"></span>{{ pr }}</span>{% endfor %}</div>
+</div>
+{% endif %}
+<div class="row f1">
+  {% if S('ramadan_day.quran') %}{% call box(L('ramadan_day.quran')) %}<div style="display:flex;align-items:center;justify-content:center;flex:1;gap:0.4rem" class="muted small">Pages: <span class="big-num" style="font-size:1.6rem">____</span> Juz: ____</div>{% endcall %}{% endif %}
+  {% if S('ramadan_day.deeds') %}{% call box(L('ramadan_day.deeds'), 'f2') %}{{ checks(4) }}{% endcall %}{% endif %}
+</div>
+{% if S('ramadan_day.dua') %}{% call box(L('ramadan_day.dua'), 'f1') %}{{ lines() }}{% endcall %}{% endif %}
+{% call box('Reflection', 'f1') %}{{ lines() }}{% endcall %}

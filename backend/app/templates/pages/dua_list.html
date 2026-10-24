@@ -1,0 +1,13 @@
+{% from '_macros.html' import header with context %}
+{% call header(T('dua_list.title'), ar=L('ar.dua')) %}{% endcall %}
+{% for du in d.duas %}
+<div class="dua">
+  <div class="dt"><span>{{ du.title }}</span>{% if not du.verified %}<span class="unv">UNVERIFIED</span>{% endif %}</div>
+  {% if du.arabic %}<div class="ar" lang="ar" dir="rtl" style="font-size:{{ fit(du.arabic, 1.55, 90, 0.55) }}">{{ du.arabic }}</div>{% endif %}
+  {% if du.english %}<div class="en" style="font-size:{{ fit(du.english, 0.82, 260, 0.6) }}">{{ du.english }}</div>{% endif %}
+  {% if du.reference and S('dua_list.reference') %}<div class="ref">{{ du.reference }}</div>{% endif %}
+</div>
+{% else %}
+<div class="dua"><div class="dt">Add duas in the Dua Library</div><div class="en muted">This page lists the duas you select in the Dua Library (Arabic + English). Paste verified text there.</div></div>
+{% endfor %}
+{% for i in range(3 - d.duas|length) %}<div class="f1"></div>{% endfor %}

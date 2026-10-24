@@ -1,0 +1,19 @@
+{
+  "label": "Blush Bloom",
+  "description": "Blush pink and butter yellow on white, Caveat handwritten headings, playful rounded shapes and little flowers. Cute and feminine.",
+  "featured": true,
+  "order": 2,
+  "colors": {
+    "primary": "#BA5275", "accent": "#D57992", "background": "#FFFFFF", "ink": "#5A3D47", "muted": "#7E626C",
+    "fill": "#FFF1F4", "line": "#F6D3DD", "fill_strong": "#FCE1E8",
+    "highlight": "#FFE59A", "highlight_soft": "#FFF8E0", "note": "#FFE59A", "note_soft": "#FFFBEA", "sky": "#FFE59A"
+  },
+  "fonts": {"title": "Caveat", "heading": "Caveat", "body": "Poppins", "script": "Caveat"},
+  "title_scale": 1.3,
+  "corner": "bubbly",
+  "cards": "soft",
+  "cover": "bloom",
+  "decoration": "bloom",
+  "motif": "flower",
+  "swatches": ["#F7C6D2", "#D57992", "#BA5275", "#FFE59A", "#FFF8E0", "#FFFFFF"]
+}

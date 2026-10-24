@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>How to use your planner</title>
+<style>
+{{ font_faces }}
+@page { size: {{ page_w }}px {{ page_h }}px; margin: 56px 60px 64px 60px; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: '{{ t.body_font }}', sans-serif; color: {{ t.ink }}; font-size: 12.5px; line-height: 1.6;
+       -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+h1 { font-family: '{{ t.title_font }}', serif; color: {{ t.primary }}; font-size: 40px; margin: 0 0 4px; font-weight: 600; line-height: 1.1; }
+h2 { font-family: '{{ t.heading_font }}', serif; color: {{ t.primary }}; font-size: 18px; margin: 26px 0 8px; padding-bottom: 6px; border-bottom: 2px solid {{ t.accent }}; break-after: avoid; }
+h3 { font-size: 13px; color: {{ t.accent }}; margin: 14px 0 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+.kicker { color: {{ t.accent }}; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600; font-size: 11px; }
+.box { background: {{ t.fill }}; border-radius: {{ t.radius }}px; padding: 12px 16px; margin: 10px 0; break-inside: avoid; }
+table { width: 100%; border-collapse: collapse; margin: 6px 0; }
+td, th { text-align: left; padding: 6px 8px; border-bottom: 1px solid {{ t.line }}; vertical-align: top; }
+th { color: {{ t.primary }}; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+ol, ul { padding-left: 20px; margin: 4px 0; }
+li { margin: 3px 0; }
+.foot { margin-top: 30px; text-align: center; color: {{ t.muted }}; font-size: 11px; }
+.hero { padding: 26px 0 10px; border-bottom: 3px double {{ t.primary }}; margin-bottom: 10px; position: relative; }
+.hero .logo { position: absolute; right: 0; top: 18px; max-height: 64px; max-width: 150px; object-fit: contain; }
+.hand { font-family: '{{ t.script_font }}', cursive; color: {{ t.accent }}; font-size: 20px; }
+</style></head>
+<body>
+<div class="hero">
+  {% if logo %}<img class="logo" src="{{ logo }}" alt="">{% endif %}
+  <div class="kicker">Thank you for your purchase</div>
+  <h1>How to use your {{ title }}</h1>
+  <div style="color: {{ t.muted }}">{{ subtitle }}</div>
+</div>
+
+<h2>What's included</h2>
+<table>
+  <tr><th>File</th><th>Format</th><th>Pages</th></tr>
+  {% for f in files %}<tr><td>{{ f.name }}</td><td>{{ f.desc }}</td><td>{{ f.pages }}</td></tr>{% endfor %}
+</table>
+<div class="box"><b>Inside:</b> {{ inside|join(' · ') }}</div>
+{% if calendar_note %}<p>{{ calendar_note }}</p>{% endif %}
+
+<h2>Page sizes</h2>
+<ul>{% for s in sizes %}<li><b>{{ s.label }}</b>{% if s.note %} – {{ s.note }}{% endif %}</li>{% endfor %}</ul>
+
+{% if has_printable %}
+<h2>Printing at home</h2>
+<ol>
+  <li>Open the <b>printable</b> PDF in Adobe Acrobat Reader (free) – browser PDF viewers sometimes change the scale.</li>
+  <li>Choose <b>File → Print</b> and set the paper size to match the file (A4, US Letter, A5 or Half Letter).</li>
+  <li>Set scaling to <b>Actual size / 100 %</b>. If you print an A4 file on Letter paper (or the other way round), choose <b>Fit</b> or <b>Shrink oversized pages</b> instead.</li>
+  <li>For A5 / Half Letter on a standard printer, use <b>Multiple pages per sheet → 2</b> or <b>Booklet</b> and cut in half.</li>
+  <li>Print a single test page first to check margins and colours.</li>
+  <li>For double-sided printing choose <b>Flip on long edge</b>.</li>
+  {% if binder %}<li>The extra left margin is for hole-punching / ring binding.</li>{% endif %}
+  {% if ink %}<li>This file uses ink-saving lighter fills.</li>{% endif %}
+</ol>
+<div class="box">Tip: 100–120 gsm matte paper gives a lovely finish and prevents ink showing through.</div>
+{% endif %}
+
+{% if has_digital %}
+<h2>Using it digitally (GoodNotes, Notability & more)</h2>
+<h3>GoodNotes 5 / 6</h3>
+<ol>
+  <li>Download the <b>digital</b> PDF to your iPad (Files app) – on iPhone/iPad, tap the Etsy download link and choose <b>Save to Files</b>.</li>
+  <li>Open GoodNotes → <b>+ New → Import</b> and select the PDF. Choose <b>Import as new document</b>.</li>
+  <li>Use the pen tool to write. Switch to <b>Read-only mode</b> (or tap with your finger while the pen is not selected) to tap links.</li>
+</ol>
+<h3>Notability</h3>
+<ol>
+  <li>Open Notability → <b>Import</b> → choose the PDF from Files.</li>
+  <li>Tap links with your finger while in the <b>scroll / select</b> mode.</li>
+</ol>
+<h3>Other apps</h3>
+<p>Works in Noteshelf, Xodo, Samsung Notes, Adobe Acrobat and any PDF annotation app that supports internal links.</p>
+<h3>How the hyperlinks work</h3>
+<ul>
+  {% if short %}
+  <li><b>Side tabs</b> jump to the month, each week and each section of this planner.</li>
+  <li><b>Home</b> (top left) returns to the start page, which links to every section; <b>Back</b> goes up one level.</li>
+  {% else %}
+  <li><b>Side tabs</b> jump to the year, each quarter and each month.</li>
+  <li><b>Home</b> (top left) returns to the index; <b>Back</b> goes up one level (day → week → month).</li>
+  <li>The <b>index</b> page links to every section; bookmarks are also included for the sidebar.</li>
+  {% endif %}
+  {% if has_days %}<li><b>Tap any date</b> in a monthly calendar to open that day's page.</li>{% elif has_weeks %}<li><b>Tap any date</b> in a monthly calendar to open that week.</li>{% endif %}
+</ul>
+<div class="box">Tip: duplicate the original file before you start, so you always have a blank copy.</div>
+{% endif %}
+
+<h2>Personal-use licence</h2>
+<p>This planner is for <b>personal use only</b>. You may print it as many times as you like for yourself and your family.
+You may not resell, share, distribute or upload the files (or edited versions of them) anywhere, or use them for commercial purposes.
+Copyright © {{ year }} {{ shop }}. All rights reserved.</p>
+
+<h2>Questions?</h2>
+<p>{{ contact }}</p>
+<p class="hand">Happy planning!</p>
+<div class="foot">{{ shop }}{% if etsy %} · etsy.com/shop/{{ etsy }}{% endif %}</div>
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "label": "Sky Classic",
+  "description": "Sky blue and cream, Playfair headings, rounded soft cards and a little bow. Calm and professional.",
+  "featured": true,
+  "order": 1,
+  "aliases": ["brand"],
+  "colors": {
+    "primary": "#1D4E5F", "accent": "#2A93B3", "background": "#FFFCF8", "ink": "#35535E", "muted": "#6A858E",
+    "fill": "#EAF8FC", "line": "#C9E6EE", "fill_strong": "#D3F1F8",
+    "highlight": "#F7C6D2", "highlight_soft": "#FFF1F4", "note": "#FFE59A", "note_soft": "#FFF8E0", "sky": "#93E2F0"
+  },
+  "fonts": {"title": "Playfair Display", "heading": "Playfair Display", "body": "Poppins", "script": "Caveat"},
+  "corner": "rounded",
+  "cards": "soft",
+  "cover": "panel",
+  "decoration": "bow",
+  "motif": "bow",
+  "swatches": ["#93E2F0", "#2A93B3", "#1D4E5F", "#F7C6D2", "#FFE59A", "#FFFCF8"]
+}

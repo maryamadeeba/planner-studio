@@ -1,0 +1,4 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('scripting.title')) %}Date: ________{% endcall %}
+<div class="prompt fnone">{{ L('scripting.prompt') }}</div>
+<div class="box grow">{{ lines() }}</div>

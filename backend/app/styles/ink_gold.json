@@ -1,0 +1,20 @@
+{
+  "label": "Ink & Gold Minimal",
+  "description": "Clean modern layout: deep ink text, a gold accent, thin lines instead of cards, Poppins only and lots of white space. Premium and minimalist.",
+  "featured": true,
+  "order": 3,
+  "colors": {
+    "primary": "#1D4E5F", "accent": "#C9A24B", "background": "#FFFFFF", "ink": "#1D4E5F", "muted": "#5F7880",
+    "fill": "#F8F6F1", "line": "#E3DDD0", "fill_strong": "#EFE9DC",
+    "highlight": "#C9A24B", "highlight_soft": "#FAF7EF", "note": "#C9A24B", "note_soft": "#FBF9F4", "sky": "#EFE9DC"
+  },
+  "fonts": {"title": "Poppins", "heading": "Poppins", "body": "Poppins", "script": "Poppins"},
+  "title_scale": 0.92,
+  "corner": "square",
+  "cards": "lines",
+  "cover": "editorial",
+  "decoration": "minimal",
+  "motif": "none",
+  "accent_role": "decorative",
+  "swatches": ["#1D4E5F", "#C9A24B", "#E3DDD0", "#F8F6F1", "#FFFFFF"]
+}

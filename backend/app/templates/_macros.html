@@ -1,0 +1,110 @@
+{% macro lnk(target, cls='', style='') -%}
+{%- set h = href(target) -%}
+{%- if h and digital -%}<a class="{{ cls }}" style="{{ style }}" href="{{ h }}">{{ caller() }}</a>
+{%- else -%}<span class="{{ cls }}" style="{{ style }}">{{ caller() }}</span>{%- endif -%}
+{%- endmacro %}
+
+{# Page header: hand-lettered kicker, serif title (shrinks to fit), bow motif, meta on the right.
+   `img` = month header picture shown at the left or right of the title. #}
+{% macro header(title, kicker='', meta='', ar='', size=2.1, maxc=22, img=none) -%}
+<div class="ph">
+  {% if img and img.position == 'left' %}{{ picture(img, 'ph-img') }}{% endif %}
+  <div class="ph-main" style="flex:1">
+    {% if kicker %}<div class="kicker">{{ kicker }}</div>{% endif %}
+    <div class="ph-title">
+      <h1 style="font-size:{{ fit(title, size * t.get('title_scale', 1), maxc, 0.3) }}">{{ title }}</h1>
+      {% if t.motif %}{{ motif() }}{% endif %}
+    </div>
+  </div>
+  <div class="meta">
+    {% if ar %}<div class="ar ar-sub" lang="ar" dir="rtl">{{ ar }}</div>{% endif %}
+    {% if meta %}<span class="pill">{{ meta }}</span>{% endif %}
+    {% if caller %}{{ caller() }}{% endif %}
+  </div>
+  {% if img and img.position == 'right' %}{{ picture(img, 'ph-img') }}{% endif %}
+</div>
+{% if img and img.position == 'banner' %}{{ picture(img, 'ph-banner') }}{% endif %}
+{%- endmacro %}
+
+{% macro box(label, cls='f1', style='') -%}
+<div class="box {{ cls }}" style="{{ style }}">{% if label %}<div class="bh">{{ label }}</div>{% endif %}<div class="bb col" style="gap:0">{{ caller() }}</div></div>
+{%- endmacro %}
+
+{# An uploaded picture with its fit / opacity / shape settings (see catalog.image_setting). #}
+{% macro picture(img, cls='img-frame', style='') -%}
+<div class="{{ cls }} shape-{{ img.shape }}" style="opacity:{{ img.opacity }};{{ style }}">
+  <img src="{{ img.url }}" alt="" style="object-fit:{{ img.fit }};object-position:{{ img.get('position') if img.get('position') in ('top','bottom','left','right') else 'center' }}">
+</div>
+{%- endmacro %}
+
+{# Quotes: a soft blush card, a one-line strip, or a hand-lettered footer line (daily pages). #}
+{% macro quote_card(q, size=1.3, maxc=70) -%}
+{% if q %}<div class="quote-card"><div class="q" style="font-size:{{ fit(q.text, size, maxc, 0.55) }}">{{ q.text }}</div>{% if q.author %}<div class="by">— {{ q.author }}</div>{% endif %}</div>{% endif %}
+{%- endmacro %}
+
+{% macro quote_strip(q) -%}
+{% if q %}<div class="quote-strip"><span class="q" style="font-size:{{ fit(q.text, 1.15, 60, 0.6) }}">{{ q.text }}</span>{% if q.author %}<span class="by">{{ q.author }}</span>{% endif %}</div>{% endif %}
+{%- endmacro %}
+
+{% macro day_quote(q) -%}
+{% if q %}<div class="day-quote" style="font-size:{{ fit(q.text, 1.05, 80, 0.6) }}">“{{ q.text }}”{% if q.author %} <span class="by">— {{ q.author }}</span>{% endif %}</div>{% endif %}
+{%- endmacro %}
+
+{% macro lines(extra='') -%}<div class="ls ls-{{ t.line_style }} {{ extra }}"></div>{%- endmacro %}
+
+{% macro checks(n, numbered=false) -%}
+<div class="checks">{% for i in range(n) %}<div>{% if numbered %}<span class="num">{{ i + 1 }}</span>{% else %}<span class="cb"></span>{% endif %}</div>{% endfor %}</div>
+{%- endmacro %}
+
+{% macro glass() -%}
+<svg viewBox="0 0 24 24" fill="none" stroke="{{ t.accent }}" stroke-width="1.4" aria-hidden="true"><path d="M5 3h14l-1.6 17.2a1 1 0 0 1-1 .8H7.6a1 1 0 0 1-1-.8z"/><path d="M6 8h12" stroke-dasharray="2 2"/></svg>
+{%- endmacro %}
+
+{% macro face(kind) -%}
+<svg viewBox="0 0 24 24" fill="none" stroke="{{ t.primary }}" stroke-width="1.3" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="8.5" cy="10" r="0.9" fill="{{ t.primary }}"/><circle cx="15.5" cy="10" r="0.9" fill="{{ t.primary }}"/>
+{% if kind == 0 %}<path d="M7.5 17c2.5-2.6 6.5-2.6 9 0"/>{% elif kind == 1 %}<path d="M8 16.2c2.2-1.2 5.8-1.2 8 0"/>{% elif kind == 2 %}<path d="M8 15.5h8"/>{% elif kind == 3 %}<path d="M8 14.8c2.2 1.4 5.8 1.4 8 0"/>{% else %}<path d="M7 14c2.5 3.4 7.5 3.4 10 0"/>{% endif %}</svg>
+{%- endmacro %}
+
+{% macro minimonth(m, linkable=true, header_link=true) -%}
+<div class="mini">
+  {% call lnk(targets.get(m.year, {}).get('m', {}).get(m.month) if header_link else none, 'mt' ~ ('' if eng.in_range(m.year, m.month) else ' out')) %}{% if m.undated %}{{ L('undated.month') }} ______{% else %}{{ m.name }}{% endif %}{% endcall %}
+  <div class="g{{ ' ug' if m.undated }}">
+    {% for wd in WEEKDAYS_LETTER %}<span class="h">{{ wd }}</span>{% endfor %}
+    {% for row in m.grid %}{% for c in row %}
+      {% if c %}{% set inr = eng.day_in_range(c) %}{% call lnk(plan.day_target.get(c.id) if linkable and inr else none, ('e' if c.events and c.events[0].highlight else '') ~ ('' if inr else ' o')) %}{{ c.day }}{% endcall %}{% else %}<span></span>{% endif %}
+    {% endfor %}{% endfor %}
+  </div>
+</div>
+{%- endmacro %}
+
+{# "Month: ______" style fill-in field for undated pages #}
+{% macro blank(label, width='7rem') -%}
+<span class="blank">{{ label }}:<span class="bl" style="width:{{ width }}"></span></span>
+{%- endmacro %}
+
+{# The template's decorative motif (bow or flower), e.g. next to page titles. #}
+{% macro motif(style='') -%}
+{% if t.motif_kind == 'flower' %}{{ flower(style or 'width:1.6rem;height:auto;margin-top:0.2rem') }}{% else %}{{ bow(style) }}{% endif %}
+{%- endmacro %}
+
+{# Five-petal flower (Blush Bloom). #}
+{% macro flower(style='', petal='', center='') -%}
+<svg class="flower" style="{{ style }}" viewBox="0 0 40 40" aria-hidden="true">
+  <g fill="{{ petal or t.accent }}" fill-opacity="0.55">
+    <circle cx="20" cy="11" r="7"/><circle cx="28.6" cy="17.2" r="7"/><circle cx="25.3" cy="27.3" r="7"/>
+    <circle cx="14.7" cy="27.3" r="7"/><circle cx="11.4" cy="17.2" r="7"/>
+  </g>
+  <circle cx="20" cy="20" r="5" fill="{{ center or t.highlight }}"/>
+</svg>
+{%- endmacro %}
+
+{# Productivity Shop by M bow mark #}
+{% macro bow(style='', fill='', line='') -%}
+<svg class="bow" style="{{ style }}" viewBox="0 0 64 44" aria-hidden="true">
+  <g fill="{{ fill or t.get('sky', t.accent_soft) }}" stroke="{{ line or t.accent }}" stroke-width="2" stroke-linejoin="round">
+    <path d="M30 23 L21 41 L27 38 L30 43 L33 25 Z"/><path d="M34 23 L43 41 L37 38 L34 43 L31 25 Z"/>
+    <path d="M32 20 C24 5 5 3 5 15 C5 27 22 27 32 20 Z"/><path d="M32 20 C40 5 59 3 59 15 C59 27 42 27 32 20 Z"/>
+    <ellipse cx="32" cy="20" rx="5" ry="5.6"/>
+  </g>
+</svg>
+{%- endmacro %}

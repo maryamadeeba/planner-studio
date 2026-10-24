@@ -1,0 +1,33 @@
+{
+  "label": "Soft pastel / feminine",
+  "description": "Soft pastel rose and mint with a script title.",
+  "featured": false,
+  "order": 11,
+  "colors": {
+    "primary": "#A65F73",
+    "accent": "#709992",
+    "background": "#FFFAF8",
+    "ink": "#4A3940",
+    "muted": "#8F7C83",
+    "fill": "#FBEBEE",
+    "line": "#EBCDD4"
+  },
+  "fonts": {
+    "title": "Dancing Script",
+    "heading": "Poppins",
+    "body": "Poppins",
+    "script": "Dancing Script"
+  },
+  "corner": "rounded",
+  "cards": "soft",
+  "cover": "panel",
+  "decoration": "dots",
+  "motif": "bow",
+  "swatches": [
+    "#A65F73",
+    "#F4C7D1",
+    "#709992",
+    "#F8E3C8",
+    "#FFFAF8"
+  ]
+}

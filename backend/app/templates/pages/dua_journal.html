@@ -1,0 +1,8 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('dua_journal.title'), ar=L('ar.dua')) %}Date: ________{% endcall %}
+{% call box(L('dua_journal.prompt'), 'f2') %}{{ lines() }}{% endcall %}
+<div class="row f1">
+  {% call box('For whom') %}{{ lines() }}{% endcall %}
+  {% call box('Why I am asking') %}{{ lines() }}{% endcall %}
+</div>
+{% call box('Reflection', 'f1') %}{{ lines() }}{% endcall %}

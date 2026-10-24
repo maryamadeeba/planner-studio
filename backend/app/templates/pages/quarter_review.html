@@ -1,0 +1,12 @@
+{% from '_macros.html' import header, box, lines, blank with context %}
+{% if undated %}
+{% call header(T('quarter_review.title')) %}{{ blank(L('undated.quarter'), '6rem') }}{% endcall %}
+{% else %}
+{% call header(T('quarter_review.title'), 'Q' ~ d.q ~ ' · ' ~ eng.year_title(d.year)) %}{% endcall %}
+{% endif %}
+<div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:0.7rem;flex:1;min-height:0">
+  {% for k in ['wins','challenges','lessons','next'] %}{% if S('quarter_review.' ~ k) %}{% call box(L('quarter_review.' ~ k)) %}{{ lines() }}{% endcall %}{% endif %}{% endfor %}
+</div>
+<div class="box fnone blush" style="padding:0.6rem 0.9rem;flex-direction:row;align-items:center;gap:0.6rem;font-size:0.75rem">
+  <b style="color:var(--primary)">Rate this quarter</b>{% for i in range(10) %}<span class="circle" style="width:1.2rem;height:1.2rem;display:inline-flex;align-items:center;justify-content:center;font-size:0.55rem">{{ i+1 }}</span>{% endfor %}
+</div>

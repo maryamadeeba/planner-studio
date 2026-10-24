@@ -1,0 +1,39 @@
+{% from '_macros.html' import header, box, lines, checks, lnk, blank, quote_strip with context %}
+{% set w = d.week %}
+{% if undated %}
+{% call header(T('week.title'), L('week.hand')) %}{{ blank(L('undated.week'), '8rem') }}{% endcall %}
+{% else %}
+{% call header(T('week.title') ~ (' ' ~ w.iso_week if cfg.calendar.iso_weeks else ''), w.label) %}{% endcall %}
+{% endif %}
+{{ quote_strip(r.quote(p)) }}
+{% set layout = lay.week_layout %}
+{% macro daybox(i) %}
+  {% set c = w.days[i] %}{% set ok = w.in_range[i] %}
+  <div class="box f1{{ ' soft' if c.weekday >= 5 and not t.ink_saving }}" style="{{ '' if ok else 'opacity:0.35' }}">
+    {% call lnk(plan.day_target.get(c.id) if ok else none, 'bh plain', 'display:flex;justify-content:space-between;gap:0.3rem') %}<span>{{ WEEKDAYS_SHORT[c.weekday] if layout == 'vertical' else WEEKDAYS[c.weekday] }}</span><span>{% if undated %}<span class="bl" style="width:{{ '1.6rem' if layout == 'vertical' else '3rem' }}"></span>{% else %}{{ c.day }}{% if layout != 'vertical' %} {{ c.month_name }}{% endif %}{% endif %}</span>{% endcall %}
+    <div class="bb col" style="gap:0">
+      {% if c.events %}<div class="small" style="color:var(--accent);padding:0.2rem 0.5rem 0;font-weight:600">{{ c.events|map(attribute='name')|join(' · ') }}</div>{% endif %}
+      {{ lines() }}
+    </div>
+  </div>
+{% endmacro %}
+{% set side %}
+  {% if S('week.priorities') %}{% call box(L('week.priorities'), 'fnone', 'height:' ~ ('22%' if layout != 'horizontal' else '24%')) %}{{ checks(3, true) }}{% endcall %}{% endif %}
+  {% if S('week.todo') %}{% call box(L('week.todo')) %}{{ checks(7) }}{% endcall %}{% endif %}
+  {% if S('week.notes') %}{% call box(L('week.notes'), 'f1 butter') %}{{ lines() }}{% endcall %}{% endif %}
+{% endset %}
+{% set has_side = S('week.priorities') or S('week.todo') or S('week.notes') %}
+{% if layout == 'vertical' %}
+  {% if has_side %}<div class="row" style="flex:0 0 26%">{{ side|replace('fnone', 'f1')|replace('height:22%','')|safe }}</div>{% endif %}
+  <div class="row grow">{% for i in range(7) %}{{ daybox(i) }}{% endfor %}</div>
+{% elif layout == 'horizontal' %}
+  <div class="row grow">
+    <div class="col" style="flex:2.4">{% for i in range(7) %}{{ daybox(i) }}{% endfor %}</div>
+    {% if has_side %}<div class="col f1">{{ side }}</div>{% endif %}
+  </div>
+{% else %}
+  <div style="display:grid;grid-template-columns:repeat({{ 4 if g.landscape else 2 }},1fr);grid-auto-rows:1fr;gap:0.7rem;flex:1;min-height:0">
+    {% for i in range(7) %}{{ daybox(i) }}{% endfor %}
+    {% if has_side %}<div class="col">{{ side }}</div>{% endif %}
+  </div>
+{% endif %}

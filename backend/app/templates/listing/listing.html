@@ -1,0 +1,138 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+{{ font_faces }}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: {{ W }}px; height: {{ H }}px; overflow: hidden; }
+body { background: {{ t.fill }}; font-family: '{{ t.body_font }}', sans-serif; color: {{ t.ink }}; position: relative; }
+.bg-deco { position: absolute; inset: 0; }
+h1 { font-family: '{{ t.title_font }}', serif; color: {{ t.primary }}; font-weight: 600; line-height: 1.05; }
+h2 { font-family: '{{ t.heading_font }}', sans-serif; color: {{ t.accent }}; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600; }
+.paper { background: #fff; box-shadow: 0 30px 60px rgba(0,0,0,0.18), 0 4px 10px rgba(0,0,0,0.08); position: absolute; }
+.paper img, .screen img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.tablet { position: absolute; background: #1F1F22; border-radius: 70px; padding: 46px; box-shadow: 0 40px 80px rgba(0,0,0,0.25); }
+.tablet .screen { width: 100%; height: 100%; border-radius: 18px; overflow: hidden; background: #fff; }
+.tablet::after { content: ""; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #3a3a3e; top: 50%; left: 16px; transform: translateY(-50%); }
+.tablet.land::after { left: 50%; top: 16px; transform: translateX(-50%); }
+.badge { position: absolute; background: {{ t.primary }}; color: {{ t.background }}; font-family: '{{ t.heading_font }}', sans-serif; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 999px; padding: 22px 46px; font-size: 38px; }
+.shop { position: absolute; bottom: 50px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 22px; font-size: 34px; letter-spacing: 0.2em; text-transform: uppercase; color: {{ t.muted }}; font-family: '{{ t.heading_font }}', sans-serif; }
+.shop img { height: 48px; width: auto; }
+.list { font-size: 46px; line-height: 1.55; }
+.list div::before { content: "✓  "; color: {{ t.accent }}; font-weight: 700; }
+.callout { position: absolute; background: #fff; border: 3px solid {{ t.accent }}; border-radius: 26px; padding: 24px 32px; font-size: 36px; font-weight: 600; color: {{ t.primary }}; box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+.swatch { border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 26px; font-size: 30px; font-weight: 600; }
+</style></head>
+<body>
+{% if t.decoration == 'geometric' %}
+<svg class="bg-deco" width="{{ W }}" height="{{ H }}"><defs><pattern id="geo" width="120" height="120" patternUnits="userSpaceOnUse"><g fill="none" stroke="{{ t.accent }}" stroke-width="2" opacity="0.35"><path d="M60 12 L74 46 L108 60 L74 74 L60 108 L46 74 L12 60 L46 46 Z"/><rect x="33" y="33" width="54" height="54" transform="rotate(45 60 60)"/><rect x="33" y="33" width="54" height="54"/></g></pattern></defs><rect width="100%" height="100%" fill="url(#geo)"/></svg>
+{% elif t.decoration == 'dots' %}
+<svg class="bg-deco" width="{{ W }}" height="{{ H }}"><circle cx="{{ W * 0.05 }}" cy="{{ H * 0.08 }}" r="{{ H * 0.18 }}" fill="{{ t.fill_strong }}"/><circle cx="{{ W * 0.95 }}" cy="{{ H * 0.92 }}" r="{{ H * 0.2 }}" fill="{{ t.accent_soft }}"/></svg>
+{% elif t.decoration == 'bands' %}
+<div class="bg-deco" style="display:flex;height:40px">{% for c in t.rainbow[:8] %}<div style="flex:1;background:{{ c }}"></div>{% endfor %}</div>
+{% elif t.decoration == 'bloom' %}
+<svg class="bg-deco" width="{{ W }}" height="{{ H }}">
+  <circle cx="{{ W * 0.06 }}" cy="{{ H * 0.08 }}" r="{{ H * 0.2 }}" fill="{{ t.fill_strong }}"/><circle cx="{{ W * 0.96 }}" cy="{{ H * 0.94 }}" r="{{ H * 0.22 }}" fill="{{ t.note_soft }}"/>
+  {# flowers stay in the outer margins so they never sit on headlines, labels or mockups #}
+  {% for x, y, s in [(0.05, 0.22, 1.1), (0.95, 0.12, 0.9), (0.04, 0.7, 0.7), (0.96, 0.52, 0.6), (0.9, 0.97, 0.5)] %}
+  <g transform="translate({{ W * x }},{{ H * y }}) scale({{ s * 3 }})"><g fill="{{ t.accent }}" fill-opacity="0.55"><circle cx="0" cy="-9" r="7"/><circle cx="8.6" cy="-2.8" r="7"/><circle cx="5.3" cy="7.3" r="7"/><circle cx="-5.3" cy="7.3" r="7"/><circle cx="-8.6" cy="-2.8" r="7"/></g><circle r="5" fill="{{ t.highlight }}"/></g>
+  {% endfor %}
+</svg>
+{% elif t.decoration == 'minimal' %}
+<div class="bg-deco" style="inset:46px;border:2px solid {{ t.accent }}"></div>
+{% elif t.decoration == 'bow' %}
+<svg class="bg-deco" width="{{ W }}" height="{{ H }}"><circle cx="{{ W * 0.04 }}" cy="{{ H * 0.06 }}" r="{{ H * 0.2 }}" fill="{{ t.fill_strong }}"/><circle cx="{{ W * 0.17 }}" cy="{{ H * 0.02 }}" r="{{ H * 0.05 }}" fill="{{ t.highlight_soft }}"/><circle cx="{{ W * 0.96 }}" cy="{{ H * 0.95 }}" r="{{ H * 0.2 }}" fill="{{ t.note_soft }}"/></svg>
+{% endif %}
+
+{% if kind == 'cover' %}
+  <div style="position:absolute;left:0;right:0;top:110px;text-align:center">
+    <h2 style="font-size:44px">{{ L.subheadline }}</h2>
+    <h1 style="font-size:{{ fit(headline, 120, 18) }};margin-top:24px;padding:0 120px">{{ headline }}</h1>
+  </div>
+  {% set pw = H * 0.62 * img_ratio %}{% set ph = H * 0.62 %}
+  {% if has_digital %}
+  <div class="tablet" style="left:{{ W/2 - pw/2 - 180 }}px;top:{{ H*0.30 }}px;width:{{ pw + 92 }}px;height:{{ ph + 92 }}px"><div class="screen"><img src="{{ shots.cover }}"></div></div>
+  <div class="paper" style="left:{{ W/2 + 40 }}px;top:{{ H*0.36 }}px;width:{{ pw*0.82 }}px;height:{{ ph*0.82 }}px;transform:rotate(4deg)"><img src="{{ shots.second }}"></div>
+  {% else %}
+  <div class="paper" style="left:{{ W/2 - pw*0.85 }}px;top:{{ H*0.32 }}px;width:{{ pw*0.9 }}px;height:{{ ph*0.9 }}px;transform:rotate(-4deg)"><img src="{{ shots.second }}"></div>
+  <div class="paper" style="left:{{ W/2 - pw*0.3 }}px;top:{{ H*0.30 }}px;width:{{ pw }}px;height:{{ ph }}px"><img src="{{ shots.cover }}"></div>
+  {% endif %}
+  <div class="badge" style="left:80px;bottom:120px">{{ page_count }} pages</div>
+
+{% elif kind == 'collage' %}
+  <div style="position:absolute;left:0;right:0;top:80px;text-align:center"><h1 style="font-size:96px">{{ L.inside_title }}</h1><h2 style="font-size:36px;margin-top:16px">{{ headline }}</h2></div>
+  {% set cols = 3 %}{% set gap = 50 %}{% set cw = (W - 200 - gap*(cols-1)) / cols %}{% set chh = cw / img_ratio %}
+  {% set rows = 2 %}{% set scale = [1, (H - 420 - gap) / (rows * chh)]|min %}
+  {% set cw = cw * scale %}{% set chh = chh * scale %}{% set left0 = (W - (cw*cols + gap*(cols-1)))/2 %}
+  {% for s in shots.grid[:6] %}
+  <div class="paper" style="left:{{ left0 + (loop.index0 % cols)*(cw+gap) }}px;top:{{ 330 + (loop.index0 // cols)*(chh+gap) }}px;width:{{ cw }}px;height:{{ chh }}px"><img src="{{ s }}"></div>
+  {% endfor %}
+
+{% elif kind == 'inside' %}
+  <div style="position:absolute;left:140px;top:150px;width:{{ W*0.46 }}px">
+    <h2 style="font-size:40px">{{ headline }}</h2>
+    <h1 style="font-size:110px;margin:20px 0 50px">{{ L.inside_title }}</h1>
+    <div class="list" style="font-size:{{ 46 if inside|length <= 12 else 36 }}px">{% for item in inside %}<div>{{ item }}</div>{% endfor %}</div>
+  </div>
+  {% set pw = W*0.36 %}{% set ph = pw / img_ratio %}
+  <div class="paper" style="right:200px;top:{{ H*0.18 }}px;width:{{ pw }}px;height:{{ ph }}px;transform:rotate(3deg)"><img src="{{ shots.grid[1] if shots.grid|length > 1 else shots.cover }}"></div>
+  <div class="paper" style="right:300px;top:{{ H*0.18 + 140 }}px;width:{{ pw }}px;height:{{ ph }}px;transform:rotate(-3deg)"><img src="{{ shots.grid[0] if shots.grid else shots.cover }}"></div>
+
+{% elif kind == 'sizes' %}
+  <div style="position:absolute;left:0;right:0;top:120px;text-align:center"><h1 style="font-size:100px">{{ L.sizes_title }}</h1><h2 style="font-size:36px;margin-top:18px">{{ variants_text }}</h2></div>
+  {% set maxh = H*0.48 %}{% set unit = maxh / 1112 %}
+  {% set total = namespace(w=0) %}{% for s in sizes %}{% set total.w = total.w + s.w*unit + 80 %}{% endfor %}
+  {% set k = [1, (W - 200) / total.w]|min %}
+  <div style="position:absolute;left:0;right:0;bottom:{{ H*0.16 }}px;display:flex;justify-content:center;align-items:flex-end;gap:{{ 80*k }}px">
+  {% for s in sizes %}
+    <div style="display:flex;flex-direction:column;align-items:center;gap:26px">
+      <div class="paper" style="position:relative;width:{{ s.w*unit*k }}px;height:{{ s.h*unit*k }}px;{% if 'iPad' in s.key %}border:{{ 16*k }}px solid #1F1F22;border-radius:{{ 30*k }}px{% endif %}"><img src="{{ shots.cover }}" style="object-fit:cover"></div>
+      <div style="font-size:{{ 34*k }}px;font-weight:700;color:{{ t.primary }};text-align:center;max-width:{{ s.w*unit*k + 60 }}px">{{ s.short }}</div>
+    </div>
+  {% endfor %}
+  </div>
+
+{% elif kind == 'links' %}
+  <div style="position:absolute;left:0;right:0;top:90px;text-align:center"><h1 style="font-size:100px">{{ L.links_title }}</h1><h2 style="font-size:34px;margin-top:18px;padding:0 200px;line-height:1.5">{{ L.links_text }}</h2></div>
+  {% set ph = H*0.62 %}{% set pw = ph * img_ratio %}
+  <div class="tablet {{ 'land' if img_ratio > 1 else '' }}" style="left:{{ W/2 - pw/2 - 46 }}px;top:{{ H*0.30 }}px;width:{{ pw + 92 }}px;height:{{ ph + 92 }}px"><div class="screen"><img src="{{ shots.links }}"></div></div>
+  <div class="callout" style="right:60px;top:{{ H*0.42 }}px">Tap tabs →<br><span style="font-weight:400;font-size:28px">{{ 'Month · Weeks · Notes' if short else 'Year · Quarters · Months' }}</span></div>
+  <div class="callout" style="left:60px;top:{{ H*0.55 }}px">← Tap any {{ 'day' if undated else 'date' }}<br><span style="font-weight:400;font-size:28px">opens that page</span></div>
+  <div class="callout" style="left:60px;top:{{ H*0.33 }}px">← Home &amp; back<br><span style="font-weight:400;font-size:28px">on every page</span></div>
+
+{% elif kind == 'colors' %}
+  <div style="position:absolute;left:0;right:0;top:150px;text-align:center"><h1 style="font-size:110px">{{ L.colors_title }}</h1><h2 style="font-size:38px;margin-top:20px">{{ t.label }}</h2></div>
+  <div style="position:absolute;left:150px;right:150px;top:{{ H*0.36 }}px;height:{{ H*0.30 }}px;display:flex;gap:40px">
+    {% for c in swatches %}<div class="swatch" style="flex:1;background:{{ c }};color:{{ '#fff' if loop.index0 < 2 else t.ink }}">{{ c }}</div>{% endfor %}
+  </div>
+  <div style="position:absolute;left:0;right:0;top:{{ H*0.72 }}px;text-align:center;font-size:44px;color:{{ t.muted }}">
+    <span style="font-family:'{{ t.title_font }}';font-size:80px;color:{{ t.primary }}">{{ t.title_font }}</span>&nbsp;&nbsp;·&nbsp;&nbsp;<span style="font-family:'{{ t.body_font }}'">{{ t.body_font }}</span>
+  </div>
+
+{% elif kind == 'compare' %}
+  {# The same planner in every featured template, side by side #}
+  <div style="position:absolute;left:0;right:0;top:90px;text-align:center"><h1 style="font-size:96px">{{ compare|length }} styles to choose from</h1><h2 style="font-size:34px;margin-top:18px">Same planner · your favourite look</h2></div>
+  {% set n = compare|length %}{% set gap = 60 %}{% set colw = (W - 160 - gap * (n - 1)) / n %}
+  {% set pw = [colw * 0.86, (H * 0.5) * img_ratio]|min %}{% set ph = pw / img_ratio %}
+  {% for c in compare %}
+  {% set x = 80 + loop.index0 * (colw + gap) %}
+  <div style="position:absolute;left:{{ x }}px;top:{{ H * 0.3 }}px;width:{{ colw }}px;height:{{ H * 0.62 }}px">
+    <div class="paper" style="left:{{ colw - pw * 0.9 }}px;top:0;width:{{ pw * 0.9 }}px;height:{{ ph * 0.9 }}px;transform:rotate(3deg)"><img src="{{ c.inner }}"></div>
+    <div class="paper" style="left:0;top:{{ ph * 0.12 }}px;width:{{ pw * 0.9 }}px;height:{{ ph * 0.9 }}px;transform:rotate(-2deg)"><img src="{{ c.cover }}"></div>
+    <div style="position:absolute;left:0;right:0;top:{{ ph * 1.08 }}px;text-align:center">
+      <div style="font-family:'{{ t.heading_font }}';font-size:46px;font-weight:600;color:{{ t.primary }}">{{ c.label }}</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:16px">{% for s in c.swatches %}<span style="width:34px;height:34px;border-radius:50%;background:{{ s }};box-shadow:0 0 0 2px rgba(0,0,0,0.08)"></span>{% endfor %}</div>
+    </div>
+  </div>
+  {% endfor %}
+
+{% elif kind == 'personal' %}
+  <div style="position:absolute;left:140px;top:{{ H*0.30 }}px;width:{{ W*0.42 }}px">
+    <h2 style="font-size:40px">Personalised</h2>
+    <h1 style="font-size:110px;margin:24px 0">With your name</h1>
+    <div style="font-size:44px;line-height:1.5;color:{{ t.muted }}">Your name on the cover{% if personal_throughout %} and on every page{% endif %}.</div>
+  </div>
+  {% set ph = H*0.72 %}{% set pw = ph * img_ratio %}
+  <div class="paper" style="right:160px;top:{{ H*0.14 }}px;width:{{ pw }}px;height:{{ ph }}px"><img src="{{ shots.cover }}"></div>
+{% endif %}
+{% if L.shop_line or logo %}<div class="shop">{% if logo %}<img src="{{ logo }}" alt="">{% endif %}{{ L.shop_line }}</div>{% endif %}
+</body></html>

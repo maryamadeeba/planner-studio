@@ -1,0 +1,3 @@
+{% from '_macros.html' import header, box, lines with context %}
+{% call header(T('notes.title'), 'notes & ideas') %}{% endcall %}
+<div class="box grow" style="padding-top:0.6rem">{{ lines() }}</div>
